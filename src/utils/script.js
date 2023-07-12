@@ -1,5 +1,5 @@
-function generateRandomNumber(min, max){
-    const randomDecimal = Math.random() * ( max - min + 1) + min
+function generateRandomNumber(min, max) {
+    const randomDecimal = Math.random() * (max - min + 1) + min
     return Math.floor(randomDecimal)
 }
 
@@ -12,6 +12,7 @@ function generatePassword(e) {
         97 - 122 = small
     */
     e.preventDefault();
+    document.getElementById('copiedPass').style.display = 'none'
     let passwd = '';
     const isCapitals = document.querySelector('form').capital.checked
     const isSmall = document.querySelector('form').small.checked
@@ -21,38 +22,46 @@ function generatePassword(e) {
 
     while (passwd.length < passlen && (isCapitals || isSmall || isNumber || isSymbols) && (passlen > 0)) {
         const option = generateRandomNumber(1, 4)
-        // console.log("option: ", option)
         switch (option) {
             case 1:
-                if(isCapitals){
+                if (isCapitals) {
                     const num = generateRandomNumber(65, 90)
                     passwd += String.fromCharCode(num)
                 }
                 break;
             case 2:
-                if(isSmall){
+                if (isSmall) {
                     const num = generateRandomNumber(97, 122)
                     passwd += String.fromCharCode(num)
                 }
                 break;
             case 3:
-                if(isNumber){
+                if (isNumber) {
                     const num = generateRandomNumber(48, 57)
                     passwd += String.fromCharCode(num)
                 }
                 break;
 
             case 4:
-                if(isSymbols){
+                if (isSymbols) {
                     const num = generateRandomNumber(33, 47)
                     passwd += String.fromCharCode(num)
                 }
                 break;
             default:
-                break;  
+                break;
         }
     }
-    console.log(passwd)
+    if (passwd.length !== 0) {
+        document.getElementById('generatedPassword').innerText = passwd
+    }
 }
 
-module.exports = generatePassword
+function copyPass(e) {
+    if (document.getElementById('generatedPassword').innerText !== 'Your Password Here') {
+        navigator.clipboard.writeText(e.target.innerText);
+        document.getElementById('copiedPass').style.display = 'block'
+    }
+}
+
+module.exports = { generatePassword, copyPass }

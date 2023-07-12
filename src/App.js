@@ -1,5 +1,5 @@
 import React from 'react'
-import generatePassword from './utils/script.js'
+import {generatePassword, copyPass} from './utils/script.js'
 
 import './App.css'
 
@@ -8,15 +8,16 @@ const App = () => {
   return (
     <div className="container">
       <h1>Password Generator</h1>
-      <div className='getPassword'>
+      <div className='getPassword' onClick={copyPass}>
         <span id='generatedPassword'>Your Password Here</span>
       </div>
+      <div id='copiedPass'>Password Copied</div>
       <form onSubmit={generatePassword}>
         <div>
           <input
             type="checkbox"
             name="capital"
-            id="capital" />
+            id="capital" defaultChecked/>
           <label
             htmlFor="capital">
             Capital letters
@@ -48,12 +49,10 @@ const App = () => {
           <input
             type="range"
             name="passlength"
+            min={1}
+            max={200}
             id="passlength"
             onChange={(e) => document.getElementById('passlen').innerText = e.target.value} />
-          <label
-            htmlFor="Password length">
-            Password length
-          </label>
         </div>
         <div>
           <input type="submit" value="Generate Password" />
